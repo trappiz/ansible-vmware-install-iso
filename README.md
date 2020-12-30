@@ -18,4 +18,4 @@ Uncomment in playbook.yaml if you want to download the media as well:
   - name: Download media (download.sh)
     script: download.sh
 ```
-Of course modify it your needs.
+Of course modify it to your needs.
