@@ -1,0 +1,15 @@
+{
+  "all": {
+    "hosts": {
+      "vm-name": {
+        "vcenter_hostname": "<fqdn-or-ip-address>",
+        "datastore": "<datastore>",
+        "cluster": "<cluster-name>",
+        "datacenter": "<datacenter>",
+        "folder": "<folder>",
+        "src_path": "<path-to.iso>",
+        "dst_path": "<datastore-folder-path-file.iso"
+      }
+    }
+  }
+}
