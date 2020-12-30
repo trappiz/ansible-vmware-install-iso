@@ -1,1 +1,0 @@
-# ansible-vmware-install-iso
