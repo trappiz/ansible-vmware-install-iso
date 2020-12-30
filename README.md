@@ -17,5 +17,5 @@ Uncomment in playbook.yaml if you want to download the media as well:
   tasks:
   - name: Download media (download.sh)
     script: download.sh
-``
+```
 Of course modify it your needs.
