@@ -1,0 +1,64 @@
+#- hosts: localhost
+#  tasks:
+#  - name: Download media (download.sh)
+#    script: download.sh
+
+- hosts: all
+  connection: local
+  vars_prompt:
+    - name: "vcenter_username"
+      prompt: "vCenter username"
+      private: no
+    - name: "vcenter_password"
+      prompt: "vCenter Password"
+      private: yes
+  collections:
+  - community.vmware
+  - ansible.netcommon
+  tasks:
+  - name: Copying file(s) from local to remote
+    vsphere_copy:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"      
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      datacenter: "{{ datacenter }}"
+      datastore: "{{ datastore }}"
+      src: "{{ src_path }}"
+      path: "{{ dst_path }}"
+    delegate_to: localhost
+
+  - name : Create new vm(s)
+    vmware_guest :
+      hostname: "{{vcenter_hostname}}"        
+      user: "{{vcenter_username}}"
+      password: "{{vcenter_password}}"
+      validate_certs: no
+      cluster: "{{ cluster }}"
+      datacenter: "{{ datacenter }}"
+      folder: "{{ folder }}"
+      name: "{{ inventory_hostname }}"
+      state: poweredon
+      guest_id: centos64Guest
+      cdrom:
+      - iso_path: "[{{ datastore }}] {{ dst_path }}"
+        controller_number: 0
+        controller_type: sata
+        unit_number: 1
+        type: iso
+      hardware: 
+        num_cpus: 2
+        memory_mb: 4096
+        version: latest
+      disk:
+        - size_gb: 40
+          datastore: "{{ datastore }}"
+          type: thin
+      networks:
+      - name: VM Network
+        type: dhcp
+        device_type: vmxnet3
+        hostname: vm.localdomain
+        allow_guest_control: True
+        wait_for_ip_address: yes
+    register : created_vm
