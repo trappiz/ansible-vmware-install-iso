@@ -39,7 +39,7 @@
       folder: "{{ folder }}"
       name: "{{ inventory_hostname }}"
       state: poweredon
-      guest_id: centos64Guest
+      guest_id: centos8_64Guest
       cdrom:
       - iso_path: "[{{ datastore }}] {{ dst_path }}"
         controller_number: 0
